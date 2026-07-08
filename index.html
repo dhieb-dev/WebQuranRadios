@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Quran app</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="./css/style.css">
+</link>
+  <style type="text/tailwindcss">
+    @import "tailwindcss";
+    @custom-variant dark (&:where([class=dark], [class=dark] *));
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>
+    eruda.init();
+  </script>
+</head>
+
+<body class="scroll-smooth bg-gray-100 dark:bg-slate-950 text-gray-950 dark:text-gray-50">
+  <div id="progress-doc" style="width:0%" class="fixed top-0 left-0 z-10 h-1 bg-sky-200"></div>
+  <div id="download-page" class="fixed grid place-items-center top-0 left-0 bottom-0 right-0 z-10 bg-sky-100">
+    <div class="reload w-16 h-16 rounded-full border-8 border-r-transparent animate-spin "></div>
+  </div>
+  <div id="app" class="app overflow-hidden">
+    <header id="header" class="bg-white dark:bg-slate-950 absolute top-0 left-0 w-full shadow-md dark:shadow-slate-700/30">
+      <div class="container mx-auto p-4 flex justify-between items-center">
+        <div class="logo w-12 h-12 rounded-full p-1.5 bg-gray-100 dark:bg-slate-800">
+          <img src="https://freesvg.org/img/1620647850القران الكريم.png" alt="logo" class="w-full h-full">
+        </div>
+        <nav>
+          <button onclick="navbar.classList.toggle('max-lg:hidden')" class="lg:hidden rounded-lg overflow-hidden p-0.5 active:bg-gray-100">
+            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none" xmlns="http://w3.org">
+              <path d="M4 6H20M4 12H16M4 18H12" class="stroke-black dark:stroke-white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <div id="navbar" onclick="this.classList.toggle('max-lg:hidden')" class="max-lg:hidden max-lg:fixed max-lg:inset-0 max-lg:bg-white/50 max-lg:dark:bg-slate-900/60 max-lg:backdrop-blur">
+            <ul class="max-lg:w-1/2 max-lg:mx-auto max-lg:mt-6 flex max-lg:flex-col gap-4">
+              <li id="quran-nav" class="py-1 px-2 shadow rounded-lg bg-gray-100 dark:bg-slate-800">القرآن الكريم</li>
+              <li id="radios-nav" class="py-1 px-2 shadow rounded-lg bg-gray-100 dark:bg-slate-800">الإذاعات</li>
+            </ul>
+          </div>
+        </nav>
+        <div class="lang">
+          <button id="btn-langs" class="py-1 px-2 shadow flex gap-x-2 rounded-lg bg-gray-100 dark:bg-slate-900">
+            <span>🌍</span>
+            <div id="locale" class="text-sm">
+              العربية
+            </div>
+          </button>
+          <div id="list-langs" class="p-4 text-sm fixed inset-0 z-20 bg-white dark:bg-slate-950 hidden">
+            <button id="close">
+              <svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M14.5 9.50002L9.5 14.5M9.49998 9.5L14.5 14.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </button>
+            <div id="list"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="pb-16 pt-20 min-h-[80vh]">
+      <div id="container-quran" class="container mx-auto p-4">
+        <div id="quran-row" class="flex justify-between items-center tabs mb-4 bg-white dark:bg-slate-900 rounded-full">
+          <ul class="flex text-sm">
+            <button>
+              <li id="reciter-tab" class="p-2 underline active:text-red-200">القارئ</li>
+            </button>
+            <button>
+              <li id="moshaf-tab" class="p-2 underline hidden active:text-red-200">المصحف</li>
+            </button>
+            <button>
+              <li id="surah-tab" class="p-2 underline hidden active:text-red-200">السورة</li>
+            </button>
+          </ul>
+          <div id="search-section" class="flex search border-4 border-gray-100 dark:border-slate-950 rounded-full">
+            <input id="input-search" list="list-search" type="p-1 text" class="outline-none text-sm w-0 px-2">
+            <datalist id="list-search"></datalist>
+            <button id="btn-search" class="p-1 border-2 border-gray-100 dark:border-slate-950 rounded-full"><svg width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></button>
+          </div>
+        </div>
+        <section id="reciters-section" class="grid md:grid-cols-1 lg:grid-cols-2 gap-4"></section>
+        <section id="moshafs-section" class="grid md:grid-cols-1 lg:grid-cols-2 gap-4 hidden"></section>
+        <section id="suwar-section" class="grid md:grid-cols-1 lg:grid-cols-2 gap-4 hidden"></section>
+      </div>
+      <div id="container-radios" class="hidden container mx-auto p-4">
+        <div id="radio-row" class="flex justify-between items-center tabs mb-4 bg-white dark:bg-slate-900 rounded-full">
+          <ul class="flex text-sm">
+            <li id="radios-tab" class="p-2 underline">الراديو</li>
+          </ul>
+        </div>
+        <section id="radios-section" class="grid md:grid-col-1 lg:grid-col-2 gap-4"></section>
+      </div>
+      <div class="fixed bottom-2 left-2 right-2">
+        <div class="flex p-1 flex-col items-end gap-y-2">
+          <button id="btn-back-top" class="p-1.5 rounded-full bg-gray-100 dark:bg-slate-800 -translate-x-100 duration-300 translate-all"><svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" id="top-circle" xmlns="http://www.w3.org/2000/svg" class="icon line"><path id="primary" d="M21,12a9,9,0,1,1-9-9A9,9,0,0,1,21,12Zm-9,4V8M9.5,10.5,12,8l2.5,2.5" style="fill: none; stroke: rgb(0, 0, 0); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5;"></path></svg></button>
+          <button id="btn-mode" class="w-10 h-10 rounded-full bg-gray-100 dark:bg-slate-800">🌙</button>
+        </div>
+        <div id="player" class="rounded bg-sky-100 dark:bg-slate-800 p-4 hidden">
+          <div class="head mb-2 flex justify-between img">
+            <h6 id="name-audio">...</h6>
+            <div class="controls flex gap-4">
+              <button id="prev-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 4 15 12 5 20 5 4"></polygon>
+                <line x1="19" y1="5" x2="19" y2="19"></line>
+              </svg>
+              </button>
+              <button id="play-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              </button>
+              <button id="pause-btn" class="hidden"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+              </button>
+              <button id="next-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="19 20 9 12 19 4 19 20"></polygon>
+                <line x1="5" y1="19" x2="5" y2="5"></line>
+              </svg>
+              </button>
+            </div>
+          </div>
+          <div class="foot flex items-center gap-2">
+            <div id="duration">
+              00
+            </div>
+            <div id="progess-bar" class="progess relative w-full h-2 rounded bg-yellow-300 cursor-pointer">
+              <div style="width:0%" id="progess-ring" class="ring absolute top-0 bottom-0 left-0 rounded bg-blue-100"></div>
+            </div>
+            <div id="current-time">
+              00
+            </div>
+            <audio id="audio" />
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer class="container mx-auto p-4">
+      <p class="p-2 text-center">
+        Dhieb Dev 🕋
+      </p>
+    </footer>
+  </div>
+  <script type="module" src="./js/script.js"></script>
+</body>
+
+</html>
