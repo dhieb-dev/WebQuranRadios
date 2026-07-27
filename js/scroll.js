@@ -12,10 +12,10 @@ window.addEventListener("scroll", () => {
   if (window.scrollY > 400) {
     header.classList.add("fixed", "-top-100", "duration-500")
     if (window.scrollY > 500) {
-      btnBackToTop.classList.add("translate-x-0")
+      btnBackToTop.classList.add("end-0")
       header.classList.add("top-0")
     } else {
-      btnBackToTop.classList.remove("translate-x-0")
+      btnBackToTop.classList.remove("end-0")
       header.classList.remove("top-0")
     }
   } else {
